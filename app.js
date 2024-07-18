@@ -17,7 +17,7 @@ connectDb(); // Établir la connexion à la base de données
 
 const app = express();
 const port = process.env.PORT || 3000;
-const host = "192.168.252.184"
+//const host = "192.168.252.184"
 // augmenter le nombre de listeners maximum en utilisant 
 EventEmitter.defaultMaxListeners = 15;
 
@@ -43,7 +43,7 @@ app.use('/api/profiles', profileRoutes);
 // Démarrer le serveur après la connexion à la base de données
 connectDb()
   .then(() => {
-    app.listen(port,host, () => console.log(`Le serveur a bien démarré sur http://localhost :${port}`));
+    app.listen(port,() => console.log(`Le serveur a bien démarré sur http://localhost :${port}`));
   })
   .catch((error) => {
     console.error("Erreur de connexion à la base de données:", error);
