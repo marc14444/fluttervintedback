@@ -4,7 +4,8 @@ import { fileURLToPath } from "url";
 import { config } from "dotenv";
 import cors from "cors";
 import { EventEmitter } from 'events';
-import profileRoutes from './routes/profil.js'; // Note: express.json() et express.urlencoded() remplacent body-parser pour la plupart des cas
+import profileRoutes from './routes/profil.js'; 
+import categorieRoutes from "./routes/categorie.js";// Note: express.json() et express.urlencoded() remplacent body-parser pour la plupart des cas
 import adminRouter from "./routes/admin.js";
 import userRouter from "./routes/users.js";
 import articleRouter from "./routes/articles.js";
@@ -16,7 +17,7 @@ config(); // Charger les variables d'environnement
 connectDb(); // Établir la connexion à la base de données
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 //const host = "192.168.252.184"
 // augmenter le nombre de listeners maximum en utilisant 
 EventEmitter.defaultMaxListeners = 15;
@@ -36,7 +37,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
 app.use("/api/article", articleRouter);
-app.use('/api/profiles', profileRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/categorie', categorieRoutes);
 
 
 //Middleware Multer 

@@ -158,7 +158,7 @@ class adminControllers{
 
     }
     //conneecter l'utilisateur
-    static async loginAdmin(req, res){
+    /* static async loginAdmin(req, res){
             try{
                 const {email, motDePasse} = req.body;
                 const adminLogin = await Admin.findOne({email});
@@ -179,6 +179,34 @@ class adminControllers{
             }catch(error){
                 res.status(500).json({ statut: false, message: error.message })
             }
-    } 
+    }  */
+
+            static async loginAdmin(req, res) {
+                try {
+                    const { email, motDePasse } = req.body;
+                    const adminLogin = await Admin.findOne({ email });
+        
+                    if (!adminLogin) {
+                        return res.status(404).json({ statut: false, message: `Admin ${email} non trouvé` });
+                    }
+        
+                    const isPasswordValid = await bcrypt.compare(motDePasse, adminLogin.motDePasse);
+        
+                    if (!isPasswordValid) {
+                        return res.status(401).json({ statut: false, message: 'Identifiant ou mot de passe invalide' });
+                    }
+        
+                    const token = jwt.sign(adminLogin.toObject(), "mon code", { expiresIn: '24h' });
+        
+                    return res.status(200).json({
+                        statut: true,
+                        token,
+                        message: `Vous êtes connecté avec succès ${adminLogin.nom} ${adminLogin.prenom}`,
+                        admin: adminLogin
+                    });
+                } catch (error) {
+                    return res.status(500).json({ statut: false, message: error.message });
+                }
+            }
 }
 export default adminControllers
